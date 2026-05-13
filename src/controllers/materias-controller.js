@@ -77,4 +77,24 @@ router.put('/:id', async (req, res) => {
     }
 });
 
+//ELIMINAR MATERIA
+router.delete('/:id', async (req, res) => {
+    try {
+        let id = req.params.id;
+        const rowCount = await currentService.deleteByIdAsync(id);
+        if (rowCount != 0){
+            if(rowCount === -1){
+                res.status(StatusCodes.BAD_REQUEST).send(`No se puede eliminar la materia (id:${id}) porque tiene calificaciones asociadas.`);
+            }else res.status(StatusCodes.OK).json(null);
+        } 
+        else {
+            res.status(StatusCodes.NOT_FOUND).send(`No se encontro la entidad (id:${id}).`);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Error: ${error.message}`);
+    }
+});
+
+
 export default router;

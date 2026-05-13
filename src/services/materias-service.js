@@ -1,8 +1,10 @@
 import MateriasRepository from '../repositories/materias-repository.js';
-
+import CalificacionesService from './calificaciones-service.js';
 export default class MateriasService {
     constructor() {
+        console.log('Estoy en: MateriasService.constructor()');
         this.MateriasRepository = new MateriasRepository();
+        this.CalificacionesService = new CalificacionesService();
     }
     
     getAllAsync() {
@@ -15,7 +17,7 @@ export default class MateriasService {
         return  await this.MateriasRepository.getByIdAsync(id);
     }
     
-     createAsync = async (entity) => {
+    createAsync = async (entity) => {
         console.log(`CREANDO MATERIA: MateriasService.createAsync(${JSON.stringify(entity)})`);
         const newId = await this.MateriasRepository.createAsync(entity);
         return newId;
@@ -25,5 +27,18 @@ export default class MateriasService {
         console.log(`MODIFICANDO MATERIA: MateriasService.updateAsync(${JSON.stringify(entity)})`);
         const rowsAffected = await this.MateriasRepository.updateAsync(entity);
         return rowsAffected;
+    }
+
+    deleteByIdAsync = async (id) => {
+        console.log(`ELIMINANDO POR ID: MateriasService.deleteByIdAsync(${id})`);
+        let returnValue = null;
+        const verificationRows = await this.CalificacionesService.getByMateriasIdAsync(id);
+        if (verificationRows.length > 0){
+            returnValue = -1;
+        }
+        else {      
+            returnValue = await this.MateriasRepository.deleteByIdAsync(id);
+        }
+        return returnValue;
     }
 }

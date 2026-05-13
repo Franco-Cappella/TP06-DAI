@@ -93,5 +93,20 @@ export default class MateriasRepository {
         }
         return rowsAffected;
     }
+
+    deleteByIdAsync = async (id) => {
+        console.log(`MateriasRepository.deleteByIdAsync(${id})`);
+        let rowsAffected = 0;
+        
+        try {
+            const sql = `DELETE FROM materias WHERE id = $1`;
+            const values = [id];
+            const resultPg = await this.getDBPool().query(sql, values);
+            rowsAffected = resultPg.rowCount;
+        } catch (error) {
+            LogHelper.logError(error);
+        }
+        return rowsAffected;
+    }
 }
 
