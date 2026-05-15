@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
 //CREAR MATERIA
 router.post('', async (req, res) => {
     try {
-        const entity = new Materia(req.body);
+        const entity = new Materia(req.body.nombre);
         const newId = await currentService.createAsync(entity);
         if (newId > 0){
             res.status(StatusCodes.CREATED).json(newId);

@@ -79,7 +79,7 @@ export default class MateriasRepository {
             const previousEntity = await this.getByIdAsync(id);
             if (previousEntity== null) return 0;
             const sql = `UPDATE materias SET 
-                            nombre              = $2, 
+                            nombre    = $2
                         WHERE id = $1`;
                             
             const values =  [   id,     
